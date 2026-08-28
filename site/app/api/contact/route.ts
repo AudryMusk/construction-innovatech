@@ -1,4 +1,10 @@
 import { NextResponse } from "next/server";
+import {
+  customerConfirmationEmailHtml,
+  customerConfirmationEmailText,
+  internalContactEmailHtml,
+  internalContactEmailText,
+} from "@/lib/email-templates";
 
 export const runtime = "nodejs";
 
@@ -53,33 +59,51 @@ export async function POST(request: Request) {
     );
   }
 
-  const text = [
-    "Nouvelle demande de soumission depuis constructioninnovatech.com",
-    "",
-    `Nom : ${name}`,
-    `Téléphone : ${phone}`,
-    `Courriel : ${email}`,
-    `Type de projet : ${project}`,
-    `Date souhaitée : ${date || "Non précisée"}`,
-    "",
-    "Description du projet :",
-    message,
-  ].join("\n");
+  const fingerprint = new TextEncoder().encode(
+    `${email}|${payload.startedAt}|${project}|${message}`,
+  );
+  const digest = await crypto.subtle.digest("SHA-256", fingerprint);
+  const submissionId = Array.from(new Uint8Array(digest))
+    .slice(0, 6)
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("")
+    .toUpperCase();
 
-  const response = await fetch("https://api.resend.com/emails", {
+  const emailData = { submissionId, name, phone, email, project, date, message };
+
+  const response = await fetch("https://api.resend.com/emails/batch", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
-      "Idempotency-Key": crypto.randomUUID(),
+      "Idempotency-Key": `contact-${submissionId}`,
     },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      reply_to: email,
-      subject: `Nouvelle soumission — ${project} — ${name}`,
-      text,
-    }),
+    body: JSON.stringify([
+      {
+        from,
+        to: [to],
+        reply_to: email,
+        subject: `Nouveau projet — ${project} — ${name}`,
+        html: internalContactEmailHtml(emailData),
+        text: internalContactEmailText(emailData),
+        tags: [
+          { name: "type", value: "new-project" },
+          { name: "source", value: "website" },
+        ],
+      },
+      {
+        from,
+        to: [email],
+        reply_to: to,
+        subject: `${name.split(/\s+/)[0]}, nous avons bien reçu votre projet`,
+        html: customerConfirmationEmailHtml(emailData),
+        text: customerConfirmationEmailText(emailData),
+        tags: [
+          { name: "type", value: "confirmation" },
+          { name: "source", value: "website" },
+        ],
+      },
+    ]),
   });
 
   if (!response.ok) {
@@ -87,5 +111,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Le service de courriel est momentanément indisponible." }, { status: 502 });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, confirmationSent: true, reference: submissionId });
 }

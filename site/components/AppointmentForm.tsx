@@ -152,7 +152,7 @@ export function AppointmentForm() {
         <span className="success-icon"><Icon name="check" size={30} /></span>
         <p className="form-kicker">Demande envoyée</p>
         <h2 className="content-title">Merci {values.name.split(" ")[0]} !</h2>
-        <p>Votre projet est maintenant entre de bonnes mains. Notre équipe vous répondra entre 24h et 48h.</p>
+        <p>Votre projet est maintenant entre de bonnes mains. Un joli courriel de confirmation vient de vous être envoyé, et notre équipe vous répondra sous 24 à 48 heures ouvrables.</p>
         <div className="button-row">
           <a className="button button-red" href={company.phoneHref}><Icon name="phone" size={17} /> {company.phone}</a>
           <button
