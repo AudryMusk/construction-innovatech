@@ -1,0 +1,6 @@
+.DS_Store
+site/.next/
+site/node_modules/
+site/out/
+site/.env*.local
+npm-debug.log*
