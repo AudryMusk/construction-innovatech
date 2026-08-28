@@ -70,7 +70,7 @@ export const services: Service[] = [
     shortTitle: "Travaux extérieurs",
     description:
       "Revêtement, maçonnerie, toiture et aménagement extérieur pour protéger et embellir votre propriété.",
-    image: "/img/amenagement-exterieur.jpg",
+    image: "/img/refection-facade.jpg",
     icon: "bricks",
     bullets: [
       "Revêtement extérieur (Canexel, fibrociment)",
@@ -115,7 +115,7 @@ export const services: Service[] = [
     shortTitle: "Rénovation intérieure",
     description:
       "Mise à jour complète de vos espaces intérieurs, des cuisines et salles de bain jusqu’aux planchers et finitions.",
-    image: "/img/finition-sous-sol.jpg",
+    image: "/img/charpente-cours.jpg",
     icon: "brush",
     bullets: [
       "Cuisine et salle de bain",

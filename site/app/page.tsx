@@ -27,6 +27,8 @@ const commitments = [
   ["shield", "Un seul contact, du début à la fin", "Coordination complète des corps de métier par notre équipe."],
 ] as const;
 
+const [featured, ...otherServices] = services;
+
 export default function HomePage() {
   return (
     <>
@@ -72,13 +74,40 @@ export default function HomePage() {
       <section className="section section-soft specialties-section">
         <div className="container">
           <SectionTitle before="Nos" highlight="spécialités" />
-          <div className="specialty-grid" data-stagger="70">
-            {services.map((service) => (
-              <article className="specialty-card reveal" key={service.slug}>
-                <Icon name={service.icon} size={24} />
-                <h3>{service.shortTitle}</h3>
-                <p>{service.description}</p>
-                <Link href={`/services#${service.slug}`}>Voir les projets <Icon name="arrow" size={14} /></Link>
+
+          <article className="specialty-feature reveal">
+            <div className="specialty-feature-media">
+              <Image src={featured.image} alt="" fill sizes="(max-width: 900px) 100vw, 55vw" />
+            </div>
+            <div className="specialty-feature-body">
+              <p className="eyebrow">Notre cœur de métier</p>
+              <h3>{featured.shortTitle}</h3>
+              <p className="specialty-feature-text">{featured.description}</p>
+              <ul className="check-list">
+                {featured.bullets.slice(0, 4).map((bullet) => (
+                  <li key={bullet}><Icon name="check" size={15} /> {bullet}</li>
+                ))}
+              </ul>
+              <Link className="button button-red" href={`/services#${featured.slug}`}>
+                Voir ce service <Icon name="arrow" size={16} />
+              </Link>
+            </div>
+          </article>
+
+          <div className="specialty-tiles" data-stagger="70">
+            {otherServices.map((service) => (
+              <article className="specialty-tile reveal" key={service.slug}>
+                <div className="specialty-tile-media">
+                  <Image src={service.image} alt="" fill sizes="(max-width: 620px) 100vw, (max-width: 1080px) 50vw, 33vw" />
+                </div>
+                <div className="specialty-tile-body">
+                  <Icon name={service.icon} size={22} />
+                  <h3>
+                    <Link className="stretched" href={`/services#${service.slug}`}>{service.shortTitle}</Link>
+                  </h3>
+                  <p>{service.description}</p>
+                  <span className="text-link" aria-hidden="true">Voir les projets <Icon name="arrow" size={14} /></span>
+                </div>
               </article>
             ))}
           </div>

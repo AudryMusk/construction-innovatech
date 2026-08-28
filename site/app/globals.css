@@ -116,13 +116,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .stats-grid > div { align-items: center; display: flex; flex-direction: column; text-align: center; }
 .stats-grid strong { font-family: var(--display); font-size: clamp(2.9rem, 5.4vw, 4.5rem); font-weight: 400; line-height: 1; font-variant-numeric: tabular-nums; }
 .stats-grid > div > span { color: #c2c5ca; font-size: 1rem; margin-top: 8px; }
-.specialty-grid { display: grid; gap: 22px; grid-template-columns: repeat(4, 1fr); }
 .specialty-card, .value-card { background: #fff; border: 1px solid var(--line); min-height: 212px; padding: 27px 24px 23px; transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
 .specialty-card:hover, .value-card:hover { border-color: rgb(242 13 22 / .55); box-shadow: 0 13px 35px rgb(20 20 20 / .08); transform: translateY(-4px); }
 .specialty-card h3, .value-card h3 { font-size: 1.5rem; margin: 18px 0 9px; }
 .specialty-card p, .value-card p { color: var(--muted); font-size: 1.02rem; line-height: 1.55; margin: 0; }
 .specialty-card a, .text-link { align-items: center; color: var(--red); display: inline-flex; font-size: .95rem; font-weight: 800; gap: 6px; margin-top: 18px; }
-.specialty-card:nth-child(5) { grid-column-start: 2; }
 .cta-band { align-items: center; display: flex; min-height: 210px; }
 .cta-overlay { background: rgb(6 7 9 / .77); }
 .cta-content { align-items: center; display: flex; gap: 44px; justify-content: space-between; padding-block: 42px; }
@@ -236,8 +234,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .brand { width: 150px; }
   .main-nav { gap: 18px; }
   .header-phone { display: none; }
-  .specialty-grid, .values-grid { grid-template-columns: repeat(2, 1fr); }
-  .specialty-card:nth-child(5) { grid-column-start: auto; }
+  .values-grid { grid-template-columns: repeat(2, 1fr); }
   .appointment-grid { gap: 36px; grid-template-columns: minmax(0, 1fr) 330px; }
 }
 
@@ -287,7 +284,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .hero-buttons { justify-content: flex-start; width: 100%; }
   .hero-trust { gap: 14px 22px; justify-content: flex-start; }
   .stats-grid { gap: 25px; grid-template-columns: 1fr; padding-block: 38px; }
-  .specialty-grid, .values-grid, .projects-grid, .field-grid, .footer-grid { grid-template-columns: 1fr; }
+  .values-grid, .projects-grid, .field-grid, .footer-grid { grid-template-columns: 1fr; }
   .field-wide { grid-column: auto; }
   .specialty-card, .value-card { min-height: 0; }
   .cta-band { min-height: 265px; }
@@ -774,4 +771,65 @@ body.loader-active { overflow: hidden; }
   .hero-slide { transition: none; }
   .js .hero-slide img,
   .js .hero-slide[data-active="true"] img { animation: none; transform: none; }
+}
+
+
+/* ============================================================
+   Nos spécialités
+   One feature card for the core trade, then an even 3x2 grid.
+   Seven items in a four-column grid left an orphan row; this
+   splits 1 + 6 so every row is full.
+   ============================================================ */
+.specialty-feature {
+  background: #fff; border: 1px solid var(--line); display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr); margin-bottom: 26px; overflow: hidden;
+}
+.specialty-feature-media { min-height: 100%; position: relative; }
+.specialty-feature-media img { object-fit: cover; transition: transform 700ms cubic-bezier(.16,1,.3,1); }
+.specialty-feature:hover .specialty-feature-media img { transform: scale(1.04); }
+.specialty-feature-body { display: flex; flex-direction: column; justify-content: center; padding: clamp(34px, 3.6vw, 58px); }
+.specialty-feature-body .eyebrow { margin-bottom: 12px; }
+.specialty-feature h3 {
+  font-family: var(--display); font-size: clamp(2.1rem, 3.4vw, 3rem); font-weight: 400;
+  letter-spacing: .01em; line-height: 1.04; margin: 0 0 16px; text-transform: uppercase;
+}
+.specialty-feature-text { color: var(--muted); font-size: 1.08rem; margin: 0 0 22px; }
+.specialty-feature .check-list { margin-bottom: 30px; }
+.specialty-feature .button { align-self: flex-start; }
+
+.specialty-tiles { display: grid; gap: 26px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.specialty-tile {
+  background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column;
+  overflow: hidden; position: relative;
+  transition: border-color 220ms ease, box-shadow 320ms cubic-bezier(.16,1,.3,1), transform 320ms cubic-bezier(.16,1,.3,1);
+}
+.specialty-tile:hover { border-color: rgb(242 13 22 / .5); box-shadow: 0 14px 38px rgb(20 20 20 / .1); transform: translateY(-5px); }
+.specialty-tile-media { aspect-ratio: 1.62; overflow: hidden; position: relative; }
+.specialty-tile-media img { object-fit: cover; transition: transform 550ms cubic-bezier(.16,1,.3,1); }
+.specialty-tile:hover .specialty-tile-media img { transform: scale(1.06); }
+.specialty-tile-body { display: flex; flex: 1; flex-direction: column; padding: 24px 26px 28px; }
+.specialty-tile-body > svg { color: var(--red); }
+.specialty-tile h3 {
+  font-family: var(--display); font-size: 1.5rem; font-weight: 400; letter-spacing: .01em;
+  line-height: 1.06; margin: 14px 0 10px; text-transform: uppercase;
+}
+.specialty-tile p { color: var(--muted); flex: 1; font-size: 1rem; line-height: 1.55; margin: 0 0 18px; }
+.specialty-tile .text-link { margin-top: 0; }
+.specialty-tile:hover .text-link svg { transform: translateX(5px); }
+
+/* One link covers the whole card, so the accessible name stays the title. */
+.stretched::after { content: ""; inset: 0; position: absolute; z-index: 1; }
+
+@media (max-width: 1080px) {
+  .specialty-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 900px) {
+  .specialty-feature { grid-template-columns: minmax(0, 1fr); }
+  .specialty-feature-media { aspect-ratio: 1.8; min-height: 0; }
+}
+
+@media (max-width: 620px) {
+  .specialty-tiles { gap: 20px; grid-template-columns: minmax(0, 1fr); }
+  .specialty-feature .button { align-self: stretch; }
 }
