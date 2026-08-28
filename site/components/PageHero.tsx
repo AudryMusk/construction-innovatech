@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
+import { backgroundImageSet } from "@/lib/background";
 import { company } from "@/data/site";
 
 type PageHeroProps = {
@@ -12,7 +13,7 @@ type PageHeroProps = {
 
 export function PageHero({ eyebrow, title, description, image, actions = false }: PageHeroProps) {
   return (
-    <section className="page-hero" data-parallax="26" style={{ backgroundImage: `url(${image})` }}>
+    <section className="page-hero" data-parallax="26" style={{ backgroundImage: backgroundImageSet(image) }}>
       <div className="page-hero-overlay" />
       <div className="container page-hero-content">
         <p className="eyebrow">{eyebrow}</p>

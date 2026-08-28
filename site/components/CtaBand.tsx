@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
+import { backgroundImageSet } from "@/lib/background";
 import { company } from "@/data/site";
 
 type CtaBandProps = {
@@ -10,7 +11,7 @@ type CtaBandProps = {
 
 export function CtaBand({ title, image = "/img/band-cta.jpg", buttonLabel = "Demander une soumission" }: CtaBandProps) {
   return (
-    <section className="cta-band" data-parallax="22" style={{ backgroundImage: `url(${image})` }}>
+    <section className="cta-band" data-parallax="22" style={{ backgroundImage: backgroundImageSet(image) }}>
       <div className="cta-overlay" />
       <div className="container cta-content reveal">
         <h2>{title}</h2>

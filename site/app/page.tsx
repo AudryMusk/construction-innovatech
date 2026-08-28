@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { CtaBand } from "@/components/CtaBand";
+import { HeroSlideshow } from "@/components/HeroSlideshow";
 import { Icon } from "@/components/Icon";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SectionTitle } from "@/components/SectionTitle";
@@ -11,6 +12,13 @@ import { company, projects, services } from "@/data/site";
 export const metadata: Metadata = {
   title: "Construction et rénovation à Québec",
 };
+
+const heroSlides = [
+  { src: "/img/hero-accueil.jpg", alt: "Structure de bois d’une pergola en construction" },
+  { src: "/img/slide-nacelle.jpg", alt: "Pose de revêtement extérieur à la nacelle" },
+  { src: "/img/slide-chantier.jpg", alt: "Équipe au travail sur un chantier de brique" },
+  { src: "/img/slide-facade.jpg", alt: "Réfection de façade sur échafaudage" },
+];
 
 const commitments = [
   ["award", "Licence RBQ & assurance complète", "Travaux couverts et conformes aux normes du Québec."],
@@ -22,7 +30,8 @@ const commitments = [
 export default function HomePage() {
   return (
     <>
-      <section className="home-hero" data-parallax="30">
+      <section className="home-hero">
+        <HeroSlideshow slides={heroSlides} />
         <div className="home-hero-overlay" />
         <div className="container home-hero-content">
           <h1>On bâtit<br />votre <mark>avenir</mark>.</h1>

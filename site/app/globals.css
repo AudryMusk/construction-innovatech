@@ -90,7 +90,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .page-hero h1 { font-size: clamp(3.1rem, 6.2vw, 5.2rem); margin-bottom: 14px; max-width: 930px; }
 .page-hero-description { color: #d6d8dc; font-size: clamp(1.08rem, 1.8vw, 1.25rem); margin: 0; max-width: 760px; }
 .page-hero .button-row { margin-top: 24px; }
-.home-hero { align-items: center; background-image: url("/img/hero-accueil.jpg"); display: flex; min-height: min(710px, calc(100vh - 82px)); overflow: hidden; }
+.home-hero { align-items: center; background: #0b0f13; display: flex; min-height: min(710px, calc(100vh - 82px)); overflow: hidden; }
 .home-hero-overlay { background: linear-gradient(180deg, rgb(4 9 13 / .74) 0%, rgb(4 9 13 / .55) 45%, rgb(4 9 13 / .8) 100%); }
 .home-hero-content { align-items: center; display: flex; flex-direction: column; padding-block: 95px 58px; text-align: center; }
 .home-hero h1 { font-size: clamp(4.6rem, 9vw, 8.2rem); line-height: .92; margin-bottom: 24px; }
@@ -110,7 +110,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .commitment h3 { font-size: 1.12rem; margin: 0 0 3px; }
 .commitment p { color: var(--muted); font-size: 1rem; line-height: 1.5; margin: 0; }
 .inline-phone { align-items: center; display: inline-flex; font-size: 1.02rem; font-weight: 800; gap: 9px; margin-top: 23px; }
-.stats-band { background-image: url("/img/band-stats.jpg"); }
+.stats-band { background-image: image-set(url("/img/band-stats.webp") type("image/webp"), url("/img/band-stats.jpg") type("image/jpeg")); }
 .stats-overlay { background: rgb(7 8 10 / .74); }
 .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); padding-block: 43px; }
 .stats-grid > div { align-items: center; display: flex; flex-direction: column; text-align: center; }
@@ -336,12 +336,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 /* --- Hero entrance ---------------------------------------- */
 @keyframes rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
 @keyframes markSweep { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-@keyframes slowZoom { from { transform: scale(1.08); } to { transform: scale(1); } }
 
-.js .home-hero::after {
-  animation: slowZoom 2600ms cubic-bezier(.16,1,.3,1) both;
-  background: inherit; content: ""; inset: 0; position: absolute; z-index: -2;
-}
+
 .js .home-hero-content > * { animation: rise 780ms cubic-bezier(.16,1,.3,1) both; }
 .js .home-hero-content > h1 { animation-delay: 90ms; }
 .js .home-hero-content > p { animation-delay: 220ms; }
@@ -454,7 +450,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .js .home-hero::after,
   .js .home-hero-content > *,
   .js .home-hero h1 mark,
   .js .page-hero-content > *,
@@ -748,4 +743,35 @@ body.loader-active { overflow: hidden; }
   .loader-brand p,
   .loader-track span { animation-duration: .01ms; animation-delay: 0ms; }
   .branded-loader { transition-duration: .01ms; }
+}
+
+
+/* ============================================================
+   Hero slideshow
+   Crossfade plus a continuous slow drift, so the backdrop moves
+   the way footage does rather than the way a carousel steps.
+   ============================================================ */
+.hero-slideshow { inset: 0; position: absolute; z-index: -2; }
+.hero-slides { inset: 0; position: absolute; }
+.hero-slide { inset: 0; opacity: 0; position: absolute; transition: opacity 1500ms ease-in-out; }
+.hero-slide[data-active="true"] { opacity: 1; }
+.hero-slide img { height: 100%; object-fit: cover; width: 100%; }
+
+/* Drift runs long and slow, and only on the slide being shown. */
+.js .hero-slide img { transform: scale(1.06); transition: transform 900ms ease-out; }
+.js .hero-slide[data-active="true"] img { animation: heroDrift 16s ease-out forwards; }
+@keyframes heroDrift { from { transform: scale(1.06); } to { transform: scale(1.14); } }
+
+.hero-dots { bottom: 30px; display: flex; gap: 10px; justify-content: center; left: 0; position: absolute; right: 0; z-index: 2; }
+.hero-dots button { background: none; border: 0; cursor: pointer; padding: 10px 3px; }
+.hero-dots span { background: rgb(255 255 255 / .85); box-shadow: 0 1px 4px rgb(0 0 0 / .75); display: block; height: 4px; transition: background-color 300ms ease, width 400ms cubic-bezier(.16,1,.3,1); width: 20px; }
+.hero-dots button:hover span { background: rgb(255 255 255 / .8); }
+.hero-dots button.is-active span { background: var(--red); box-shadow: 0 1px 4px rgb(0 0 0 / .5); width: 44px; }
+
+@media (max-width: 560px) { .hero-dots { bottom: 16px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide { transition: none; }
+  .js .hero-slide img,
+  .js .hero-slide[data-active="true"] img { animation: none; transform: none; }
 }
