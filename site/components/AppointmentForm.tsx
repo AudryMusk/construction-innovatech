@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { FrenchDatePicker } from "@/components/FrenchDatePicker";
 import { Icon } from "@/components/Icon";
 import { company, services } from "@/data/site";
 
@@ -34,11 +35,6 @@ function isValidFrenchDate(value: string) {
   const [, day, month, year] = match;
   const date = new Date(Number(year), Number(month) - 1, Number(day));
   return date.getFullYear() === Number(year) && date.getMonth() === Number(month) - 1 && date.getDate() === Number(day);
-}
-
-function formatFrenchDate(value: string) {
-  const digits = value.replace(/\D/g, "").slice(0, 8);
-  return [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4, 8)].filter(Boolean).join("/");
 }
 
 function errorsForStep(values: Values, step: number) {
@@ -271,23 +267,15 @@ export function AppointmentForm() {
           <div className="type-question form-review">
             <span className="question-title"><span className="question-number">05</span> Quand souhaitez-vous commencer ?</span>
             <span className="question-help">Cette date est indicative et peut rester vide.</span>
-            <div className="form-date-field">
-              <Icon name="calendar" size={22} />
-              <input
-                aria-describedby={errors.date ? "date-error" : undefined}
-                aria-invalid={errors.date ? "true" : undefined}
-                autoComplete="off"
-                inputMode="numeric"
-                maxLength={10}
-                onChange={(event) => {
-                  setValues((current) => ({ ...current, date: formatFrenchDate(event.target.value) }));
-                  setErrors((current) => ({ ...current, date: undefined }));
-                }}
-                placeholder="JJ / MM / AAAA"
-                type="text"
-                value={values.date}
-              />
-            </div>
+            <FrenchDatePicker
+              describedBy={errors.date ? "date-error" : undefined}
+              invalid={Boolean(errors.date)}
+              onChange={(date) => {
+                setValues((current) => ({ ...current, date }));
+                setErrors((current) => ({ ...current, date: undefined }));
+              }}
+              value={values.date}
+            />
             {error("date")}
             <div className="review-card">
               <div><span>Projet</span><strong>{values.project}</strong></div>
